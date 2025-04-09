@@ -6,7 +6,7 @@ const story = require("./routes/Story");
 const comments = require("./routes/Comments");
 const admin = require("./routes/Admin");
 const likes = require("./routes/Likes");
-const profile = require("/routes/Profil");
+const profil = require("/routes/Profil");
 
 // Middlewares
 const app = express();
