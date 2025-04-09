@@ -2,6 +2,7 @@
 const express = require("express");
 const home = require("./routes/home");
 const mahasiswa = require("./routes/Mahasiswa");
+const story = require("./routes/Story");
 
 // Middlewares
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 // Routes
 app.use("/home", home);
 app.use("/mahasiswa", mahasiswa);
+app.use("/story", story);
 
 // connection
 const port = process.env.PORT || 9001;
