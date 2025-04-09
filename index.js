@@ -6,7 +6,6 @@ const story = require("./routes/Story");
 const comments = require("./routes/Comments");
 const admin = require("./routes/Admin");
 const likes = require("./routes/Likes");
-const profil = require("/routes/Profil");
 
 // Middlewares
 const app = express();
@@ -19,7 +18,6 @@ app.use("/story", story);
 app.use("/comments", comments);
 app.use("/admin", admin);
 app.use("/likes", likes);
-app.use("/profil", profil);
 
 // connection
 const port = process.env.PORT || 9001;
