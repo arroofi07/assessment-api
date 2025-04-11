@@ -2,21 +2,31 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const app = express();
+
+// Middlewares - pastikan middleware diletakkan SEBELUM routes
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Tambahkan ini untuk form data
+
+// Konfigurasi CORS - gunakan satu metode saja
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Ubah sesuai dengan URL aplikasi React Anda
+    methods: ["GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["X-Requested-With", "Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+// Import routes
 const home = require("./routes/home");
 const mahasiswa = require("./routes/Mahasiswa");
 const story = require("./routes/Story");
 const comments = require("./routes/Comments");
 const admin = require("./routes/Admin");
 const likes = require("./routes/Likes");
-const app = express();
-
-
-
-app.use(cookieParser());
-app.use(cors());
-
-// Middlewares
-app.use(express.json());
+const profil = require("./routes/Profil");
 
 // Routes
 app.use("/home", home);
@@ -25,22 +35,7 @@ app.use("/story", story);
 app.use("/comments", comments);
 app.use("/admin", admin);
 app.use("/likes", likes);
-
-
-// Middleware untuk mengizinkan permintaan dari domain yang berbeda
-app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Ubah sesuai dengan URL aplikasi React Anda
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+app.use("/profil", profil);
 
 // Endpoint untuk mengatur cookie
 app.get("/set-cookie", (req, res) => {
@@ -50,11 +45,11 @@ app.get("/set-cookie", (req, res) => {
   });
   res.send("Cookie berhasil diatur");
 });
+
 app.get("/get-cookie", (req, res) => {
   const cookieValue = req.cookies.nama_cookie;
   res.send(`Nilai cookie: ${cookieValue}`);
 });
-
 
 // connection
 const port = process.env.PORT || 9001;

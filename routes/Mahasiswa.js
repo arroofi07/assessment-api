@@ -146,7 +146,6 @@ router.post("/:nama/kurang-nilai", async (req, res) => {
         nama,
       },
     });
-
     if (!mahasiswa) {
       return res.status(404).json({ message: "Mahasiswa tidak ditemukan" });
     }
