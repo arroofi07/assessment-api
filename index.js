@@ -6,7 +6,6 @@ const app = express();
 
 // Middlewares - pastikan middleware diletakkan SEBELUM routes
 app.use(cookieParser());
-app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Tambahkan ini untuk form data
 
 // Konfigurasi CORS - gunakan satu metode saja
@@ -18,6 +17,22 @@ app.use(
     credentials: true,
   })
 );
+
+// Endpoint untuk mengatur cookie
+app.get("/set-cookie", (req, res) => {
+  res.cookie("nama_cookie", "nilai_cookie", {
+    maxAge: 900000, // Waktu kedaluwarsa cookie dalam milidetik
+    httpOnly: true, // Hanya diakses melalui HTTP, tidak bisa diakses melalui JavaScript pada klien
+  });
+  res.send("Cookie berhasil diatur");
+});
+
+app.get("/get-cookie", (req, res) => {
+  const cookieValue = req.cookies.nama_cookie;
+  res.send(`Nilai cookie: ${cookieValue}`);
+});
+
+app.use(express.json());
 
 // Import routes
 const home = require("./routes/home");
@@ -36,20 +51,6 @@ app.use("/comments", comments);
 app.use("/admin", admin);
 app.use("/likes", likes);
 app.use("/profil", profil);
-
-// Endpoint untuk mengatur cookie
-app.get("/set-cookie", (req, res) => {
-  res.cookie("nama_cookie", "nilai_cookie", {
-    maxAge: 900000, // Waktu kedaluwarsa cookie dalam milidetik
-    httpOnly: true, // Hanya diakses melalui HTTP, tidak bisa diakses melalui JavaScript pada klien
-  });
-  res.send("Cookie berhasil diatur");
-});
-
-app.get("/get-cookie", (req, res) => {
-  const cookieValue = req.cookies.nama_cookie;
-  res.send(`Nilai cookie: ${cookieValue}`);
-});
 
 // connection
 const port = process.env.PORT || 9001;
